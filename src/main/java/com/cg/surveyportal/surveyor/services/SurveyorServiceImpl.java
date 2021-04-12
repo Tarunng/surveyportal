@@ -48,7 +48,7 @@ public class SurveyorServiceImpl  implements ISurveyorService
 	@Override
 	public String delete(Long surveyorId) throws InvalidSurveyorException {
 		Surveyor surveyor = isurveyorrepository.findById(surveyorId).orElseThrow(()-> new InvalidSurveyorException("Invalid SurveyorId"));
-		isurveyorrepository.deleteById(surveyorId);
+		isurveyorrepository.deleteById(surveyor.getId());
 		return "Data Deleted Succesfully";
 	}
 
