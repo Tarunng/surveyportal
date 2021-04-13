@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.surveyportal.surveyor.entities.Surveyor;
@@ -26,28 +27,44 @@ public class SurveyorController
 	@Autowired
 	SurveyorServiceImpl surveyorserviceimpl;
 	
+	
+	
 	@GetMapping("/store")
 	private void insert()
 	{
 		 surveyorserviceimpl.storesurveyor();
 	}
 	
-	
-	
-	@GetMapping("/hello")
-	private String hello()
+	@GetMapping("/count")
+	private ResponseEntity<Long> countRecords()
 	{
-		return "Hello World";
+		return new ResponseEntity<>(surveyorserviceimpl.getRecordsCount(),HttpStatus.ACCEPTED);
+	}
+	
+	@GetMapping("/bylastname/{lastname}")
+	private List<Surveyor> getbyLastName(@PathVariable String lastname)
+	{
+		return surveyorserviceimpl.getbylastname(lastname);
 	}
 	
 	
-	//@GetMapping("/check/{usrname}/{password}")
-	//private String checkSurveyor(@PathVariable String username, String password)
+	
+	//@GetMapping("/hello")
+	//private String hello()
 	//{
-		
-		//return surveyorserviceimpl.authenticate(username, password);
-		
+		//return "Hello World";
 	//}
+	
+	
+	@GetMapping("/check")
+	private ResponseEntity<String> checkSurveyor( @RequestParam(value = "username") String username, @RequestParam(value="password") String password) throws SurveyorNotFoundException 
+	{
+		
+		return new ResponseEntity<>(surveyorserviceimpl.authenticate(username, password),HttpStatus.ACCEPTED);
+		
+	}
+	
+	
 	
 	
 	
@@ -81,6 +98,11 @@ public class SurveyorController
 		return new ResponseEntity<>( surveyorserviceimpl.delete(Long.parseLong(surveyorId)),HttpStatus.OK);
 	}
 	
+	@DeleteMapping("deleteall")
+	private ResponseEntity<String> deleteAllRecords()
+	{
+		return new ResponseEntity<>(surveyorserviceimpl.deleteAll(),HttpStatus.ACCEPTED);
+	}
 	
 	
 

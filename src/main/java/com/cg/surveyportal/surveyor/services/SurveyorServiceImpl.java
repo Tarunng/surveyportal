@@ -16,22 +16,30 @@ public class SurveyorServiceImpl  implements ISurveyorService
 	
 	@Autowired
 	ISurveyorRepository isurveyorrepository;
-
+	
+	
 	@Override
 	public String register(Surveyor surveyor) throws InvalidSurveyorException 
 	{
 		isurveyorrepository.save(surveyor);
-		
-		
 		return "Surveyor Added SuccessFully";
 	}
 
-	//@Override
-	//public String authenticate(String username, String password) 
-	//{
-		
-		//return null;
-	//}
+	@Override
+	public String authenticate(String username, String password) throws SurveyorNotFoundException
+	{
+		List<Surveyor> surveyor = isurveyorrepository.findByUsernameAndPassword(username,password);
+		if(surveyor.isEmpty())
+		{
+			throw new SurveyorNotFoundException("Invalid Surveyor");
+		}
+		else
+		{
+			Surveyor s = surveyor.get(0);
+			return "Valid Surveyor with details:"+s.toString();
+		}
+						
+	}
 
 	@Override
 	public Surveyor findById(Long surveyorId) throws SurveyorNotFoundException {
@@ -64,9 +72,10 @@ public class SurveyorServiceImpl  implements ISurveyorService
 		
 		Surveyor sv = new Surveyor();
 		
-		sv.setFirstName("Rahul");
+		sv.setFirstName("Tarun");
 		sv.setLastName("Jain");
 		sv.setUsername("Rahul_123");
+		sv.setPassword("Tarun@123");
 		
 		list.add(sv);
 		
@@ -74,13 +83,14 @@ public class SurveyorServiceImpl  implements ISurveyorService
 		sv.setFirstName("Rohit");
 		sv.setLastName("patel");
 		sv.setUsername("Rohit_123");
-		
+		sv.setPassword("Rohit@123");
 		list.add(sv);
 		
 		sv = new Surveyor();
 		sv.setFirstName("Rajan");
 		sv.setLastName("Jain");
 		sv.setUsername("Rajan_123");
+		sv.setPassword("Rajan@123");
 		
 		list.add(sv);
 		
@@ -88,5 +98,27 @@ public class SurveyorServiceImpl  implements ISurveyorService
 		
 		
 	}
+
+	@Override
+	public Long getRecordsCount() {
+		
+		return isurveyorrepository.count();
+	}
+	@Override
+	public List<Surveyor> getbylastname(String lastname)
+	{
+		return isurveyorrepository.findByLastName(lastname);
+	}
+
+	@Override
+	public String deleteAll() {
+		isurveyorrepository.deleteAll();
+		return "All Records Deleted";
+	}
+
+	
+	
+	
+	
 
 }
