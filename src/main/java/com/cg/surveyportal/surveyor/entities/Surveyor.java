@@ -15,15 +15,32 @@ public class Surveyor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-	@Column(nullable = false)
+	@Column(nullable = false, length = 20)
     private String username;
-    @Column(nullable = false)
+	@Column(nullable = false, length = 20)
     private String firstName;
-    @Column(nullable = false)
+	@Column(nullable = false, length = 20)
     private String lastName;
-    @Column(nullable = false)
+	@Column(nullable = false, length = 20)
     private String password;
+	
+	
+	
     
+	public Surveyor() {
+		super();
+		
+	}
+
+	public Surveyor(Long id, String username, String firstName, String lastName, String password) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+	}
+
 	public Long getId() {
 		return id;
 	}
